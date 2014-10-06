@@ -8,7 +8,7 @@ jQuery.ajax = (function(_ajax){
                       YQL      = 'http' + (/^https/.test(protocol)?'s':'') + '://query.yahooapis.com/v1/public/yql?callback=?',
                       query    = 'select * from html where url="{URL}" and xpath="*"';
                
-                  function isExternal(url) {
+                  funct ion isExternal(url) {
                     return !exRegex.test(url) && /:\/\//.test(url);
                   }
                   return function(o) {
@@ -88,11 +88,9 @@ $.ajax({
 function updateNowPlaying(songList){
   var title = songList.head.next.data[1];
   var id = songList.head.next.data[0];
-  var audio = document.createElement("audio");
-  var source = document.createElement("source");
+  var audio = $('<audio controls type="audio/mpeg">');
+  var source = $('<source>');
   displayHeadTitle(title);
-  audio.controls = true;
-  source.type ="audio/mpeg";
   source.src = getHeadSrc(songList);
   audio.appendChild(source);
   document.getElementById("player").appendChild(audio);
