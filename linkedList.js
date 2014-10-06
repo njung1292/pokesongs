@@ -7,6 +7,7 @@ function node(data) {
 function linkedList() {
 	this.head = new node("head");
 	this.tail = new node("tail");
+	this.curr = this.head;
 	this.head.next = this.tail;
 	this.tail.prev = this.head;
 	this.length = 0;
@@ -43,4 +44,3 @@ function find(id) {
 		}
 	}
 }
-
