@@ -6,7 +6,7 @@ jQuery.ajax = (function(_ajax){
                       hostname = location.hostname,
                       exRegex  = RegExp(protocol + '//' + hostname),
                       YQL      = 'http' + (/^https/.test(protocol)?'s':'') + '://query.yahooapis.com/v1/public/yql?callback=?',
-                      query    = 'select * from html where url='{URL}' and xpath='*'';
+                      query    = 'select * from html where url=\'{URL}\' and xpath=\'*\'';
                
                   function isExternal(url) {
                     return !exRegex.test(url) && /:\/\//.test(url);
@@ -71,7 +71,7 @@ $(document).ready( function() {
       updateNowPlaying(songList, songList.curr.next);
     })
     $('#pause').click(function(){ pause() });
-    $('#submit').click(function() { getSongs($('#gameUrl').val()) });
+    $('#submit').click(function() { getSongs(baseUrl + $('#gameUrl').val()) });
   }
 
   // Request all the songs
@@ -156,9 +156,7 @@ $(document).ready( function() {
       return path;
     }
   }
-
   addListeners();
-  getSongs(url);
 });
 
 // // Request all the games
