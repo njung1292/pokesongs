@@ -87,9 +87,9 @@ $(document).ready( function() {
             songList = new linkedList();
             var i=0;
      
-            while ((m = songRe.exec(str)) !== null) {
-              if (m.index === songRe.lastIndex) {
-                songRe.lastIndex++;
+            while ((m = songRegEx.exec(str)) !== null) {
+              if (m.index === songRegEx.lastIndex) {
+                songRegEx.lastIndex++;
               }
               if (i%2 == 0){
                 // Get the song id
