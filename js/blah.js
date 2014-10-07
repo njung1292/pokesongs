@@ -137,7 +137,7 @@ $(document).ready( function() {
 
   function listSongs(title, songList) {
     $('#songList').empty();
-    $('#title').append(title);
+    $('#title').text(title);
     var n = songList.head.next;
     var i = 0;
     while (n.next != null) {
