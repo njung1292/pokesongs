@@ -1,5 +1,7 @@
 var text = "";
-var re = /\"s([0-9]*)\"|\"\/\d+\">([^<]*)/gm;
+var songRe = /\"s([0-9]*)\"|\"\/\d+\">([^<]*)/gm;
+var url = "http://www.brawlcustommusic.com/game/1543";
+var gameListUrl = "http://www.brawlcustommusic.com/gamelist";
 
 jQuery.ajax = (function(_ajax){
                   var protocol = location.protocol,
@@ -51,42 +53,87 @@ jQuery.ajax = (function(_ajax){
                             return _ajax.apply(this, arguments);        
                           };
                   })(jQuery.ajax);
-$.ajax({
-       url: 'http://www.brawlcustommusic.com/game/42',
-       type: 'GET',
-       success: function(res) {
-        var str = res.responseText;
-        var m;
-        var songList = new linkedList();
-        var songInfo = [];
-        var i=0;
-        var j=0;
- 
-        while ((m = re.exec(str)) !== null) {
-          if (m.index === re.lastIndex) {
-            re.lastIndex++;
-          }
-          if (i%2 == 0){
-            // Get the song id
-            songInfo[0] = m[1];
-          } else {
-            // Get the song title
-            songInfo[1]=m[2];
-            songList.add(new node(songInfo));
-            songInfo = [];
-          }
-          i++;
-        }
-        $("audio").on('ended', function() {
-          playNext(songList);
-        });
-        updateNowPlaying(songList, songList.curr.next);
-        listSongs(songList);
-     }
+
+function addListeners() {
+  $("audio").on('ended', function() {
+    updateNowPlaying(songList, songList.curr.next);
+  });
+  $("audio").on('played'), function() { pause() };
+  $("audio").on('paused'), function() { pause() };
+  $("#back").click(function() {
+    updateNowPlaying(songList, songList.curr.prev);
+  });
+  $("#forward").click(function() {
+    updateNowPlaying(songList, songList.curr.next);
+  })
+  $("#pause").click(function(){ pause() });
+  $("#submit").click(function() {getSongs($("#gameUrl").val())});
+}
+
+$(document).ready( function() {
+  addListeners();
+  getSongs(url);
 });
 
-function playNext(songList) {
-  updateNowPlaying(songList, songList.curr.next);
+// // Request all the games
+// function getGames() {
+//   $.ajax({
+//           url: gameListUrl,
+//           type: 'GET',
+//           success: function(res) {
+//             var str = res.responseText;
+//             console.log("str: " + str);
+//           }
+//   });
+// }
+
+// Request all the songs
+function getSongs(gameUrl) {
+  console.log("getting songs from: " + gameUrl);
+  $.ajax({
+         url: gameUrl,
+         type: 'GET',
+         success: function(res) {
+          var str = res.responseText;
+          var m = "";
+          var songList = new linkedList();
+          var songInfo = [];
+          var i=0;
+          var j=0;
+   
+          while ((m = songRe.exec(str)) !== null) {
+            if (m.index === songRe.lastIndex) {
+              songRe.lastIndex++;
+            }
+            if (i%2 == 0){
+              // Get the song id
+              songInfo[0] = m[1];
+            } else {
+              // Get the song title
+              songInfo[1]=m[2];
+              songList.add(new node(songInfo));
+              songInfo = [];
+            }
+            i++;
+          }
+          console.log("songList", songList);
+          updateNowPlaying(songList, songList.curr.next);
+          listSongs(songList);
+       }
+  });
+}
+
+function pause() {
+  var audio = $("audio");
+  if (audio[0].paused) {
+    audio[0].play();
+    $("#pause-btn").attr("class","glyphicon glyphicon-pause");
+    console.log("playing");
+  } else {
+    audio[0].pause();
+    $("#pause-btn").attr("class","glyphicon glyphicon-play");
+    console.log("paused");
+  }
 }
 
 function updateNowPlaying(songList, song) {
@@ -94,17 +141,21 @@ function updateNowPlaying(songList, song) {
   console.log("curr: ", songList.curr);
   var title = song.data[1];
   var id = song.data[0];
-  $("#nowPlaying").replaceWith("<p id='nowPlaying'>Now Playing: " + title + "</p>");
+  $(".nowPlaying").text("Now Playing: " + title);
   $("audio").attr("src", getSrc(song));
+  if ($("audio")[0].paused) {
+    pause();
+  }
 }
 
 function listSongs(songList) {
+  $("#songList").empty();
   var n = songList.head.next;
   while (n.next != null) {
     var data = n.data;
     var songId = data[0];
     var songTitle = data[1];
-    $("#songList").append("<li id=" + songId + ">" + songTitle + "</li>");
+    $("#songList").append("<a href=\"#\" class=\"list-group-item\" id=" + songId + ">" + songTitle + "</a>");
     $("#" + songId).click(function() {
       updateNowPlaying(songList, songList.find(this.id));
     });
