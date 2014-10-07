@@ -139,8 +139,7 @@ $(document).ready( function() {
       var data = n.data;
       var songId = data[0];
       var songTitle = data[1];
-      $('#songList').append('<a href=\'#\' class=\'list-group-item\' id=' +\
-        songId + '>' + songTitle + '</a>');
+      $('#songList').append('<a href=\'#\' class=\'list-group-item\' id=' + songId + '>' + songTitle + '</a>');
       $('#' + songId).click(function() {
         updateNowPlaying(songList, songList.find(this.id));
       });
