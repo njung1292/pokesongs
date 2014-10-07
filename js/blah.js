@@ -54,7 +54,8 @@ jQuery.ajax = (function(_ajax){
 
 $(document).ready( function() {
   var songList = new linkedList();
-  var songRegEx = /\'s([0-9]*)\'|\'\/\d+\'>([^<]*)/gm;
+  var gameTitleRegEx = /<title>([^<]*)/;
+  var songRegEx = /\"s([0-9]*)\"|\"\/\d+\">([^<]*)/gm;
   var baseUrl = 'http://www.brawlcustommusic.com/game/';
 
   function addListeners() {
@@ -71,7 +72,10 @@ $(document).ready( function() {
       updateNowPlaying(songList, songList.curr.next);
     })
     $('#pause').click(function(){ pause() });
-    $('#submit').click(function() { getSongs(baseUrl + $('#gameUrl').val()) });
+    $('#submit').click(function() { 
+      songList = new linkedList();
+      getSongs(baseUrl + $('#gameUrl').val());
+    });
   }
 
   // Request all the songs
@@ -84,9 +88,10 @@ $(document).ready( function() {
             var str = res.responseText;
             var m = '';
             var songInfo = [];
-            songList = new linkedList();
             var i=0;
-     
+            
+            var title = gameTitleRegEx.exec(str)[1];
+            console.log("title:", title);
             while ((m = songRegEx.exec(str)) !== null) {
               if (m.index === songRegEx.lastIndex) {
                 songRegEx.lastIndex++;
@@ -102,9 +107,8 @@ $(document).ready( function() {
               }
               i++;
             }
-            console.log('songList', songList);
             updateNowPlaying(songList, songList.curr.next);
-            listSongs(songList);
+            listSongs(title, songList);
          }
     });
   }
@@ -131,8 +135,9 @@ $(document).ready( function() {
     if ($('audio')[0].paused) pause();
   }
 
-  function listSongs(songList) {
+  function listSongs(title, songList) {
     $('#songList').empty();
+    $('#title').append(title);
     var n = songList.head.next;
     var i = 0;
     while (n.next != null) {
