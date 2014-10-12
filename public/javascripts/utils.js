@@ -1,8 +1,17 @@
+// Initialize important information
 var gameDict = {};
 var currentIdx = -1;
 var masterGame = "";
 var masterSongList = [];
 var utils_socket = io.connect('http://localhost:5000/utils');
+
+// Setup socket to respond to songlist data from the server
+utils_socket.on('data', function (data) {
+    masterSongList = data;
+    listSongs();
+    currentIdx = -1;
+    forward();
+});
 
 function hashGames(data) {
     hashObjects(data, gameDict);
@@ -36,7 +45,6 @@ function forward() {
 // called whenever a new song is played
 function updateNowPlaying(song, idx) {
     currentIdx = idx;
-    console.log("playing song " + currentIdx + ": ", song);
     songId = song.href.substring(1);
     songTitle = song.content;
     var src = 'http://www.brawlcustommusic.com/music/mp3/' + songId + '.mp3';
@@ -68,13 +76,7 @@ function listSongs() {
 function refreshSongList() {
     masterGame = $('#game').val();
     masterSongList = [];
-    utils_socket.send(gameDict[masterGame]);
-    utils_socket.on('songlist', function (songlist) {
-        masterSongList = songlist;
-        listSongs();
-        currentIdx = -1;
-        forward();
-    });
+    utils_socket.emit('game', gameDict[masterGame]);
 }
 
 function pause() {

@@ -5,45 +5,48 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http)
 var scraper = require('./scraper.js');
 
+// Parameters for YQL query in scraper.js
 var baseUrl = 'http://www.brawlcustommusic.com';
 var xpath = '//td/a';
 
 app.set('port', process.env.PORT || 5000);
 
+// Socket connection for Twitter typeahead suggestion engine
 var suggest = io
     .of('/suggest')
     .on('connection', function (socket) {
         console.log('connected to suggest.js');
+        // Immediately query for the list of games
+        tryQuery(baseUrl + "/gamelist", [], socket);
     });
 
+// Socket connection for sending the song list to the frontend utils
 var utils = io
     .of('/utils')
     .on('connection', function (socket) {
         console.log('connected to utils.js');
-        socket.on('message', function (message){
-            // scrape brawl custom music for songs
-            scraper.makeQuery(baseUrl+message, xpath, function(a) {
-                console.log("got songs!");
-                if (a instanceof Array){
-                    socket.emit('songlist', a);
-                } else {
-                    socket.emit('songlist', [a]);
-                }
-            });
+        // Listen for game messages from utils.js
+        socket.on('game', function (game){
+            // Query for the songlist
+            tryQuery(baseUrl + game, [], socket);
         });
     });
 
-function sendData(a) {
-    if (a.length > 0) {
-        suggest.on('connection', function (socket) {
-            socket.emit('data', a);
+// Attempts queries for data until results are non-empty.
+// Emits the results to socket.
+function tryQuery(url, results, socket) {
+    if (results.length == 0) {
+        // Try the query again
+        console.log("Attempting query:", url);
+        scraper.makeQuery(url, xpath, function (a) {
+            return tryQuery(url, a, socket);
         });
     } else {
-        console.log("you should try agaain");
+        // Emit the results
+        return socket.emit('data', results);
     }
 }
 
 http.listen(5000, function() {
     console.log('listening on *:5000');
-    scraper.makeQuery(baseUrl+"/gamelist", xpath, sendData);
 });

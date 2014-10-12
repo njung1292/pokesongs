@@ -1,5 +1,5 @@
 $(document).ready( function() {
-    // add event listeners
+    // Add event listeners
     $('audio').on('ended', function() {
         console.log('song ended.');
         forward();

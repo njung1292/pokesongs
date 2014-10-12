@@ -1,3 +1,5 @@
+// Suggestion engine for auto-completion of search queries
+
 // connect browser socket to the server!
 var suggest_socket = io.connect('http://localhost:5000/suggest');
 
@@ -10,9 +12,8 @@ var games = new Bloodhound({
 
 games.initialize();
 
-// Populate the suggestion engine AND create a hash table of the games
+// Populate the suggestion engine and create a hash table of the games
 suggest_socket.on('data', function(data) {
-    console.log("client received data!");
     hashGames(data);
     games.add(data);
 });
@@ -30,6 +31,4 @@ $(document).ready(function() {
         // is compatible with the typeahead jQuery plugin
         source: games.ttAdapter()
     });
-
-    $()
 });
