@@ -15,6 +15,7 @@ module.exports = {
                 callback(response.query.results.a);
             } else {
                 console.log("no response :( ");
+                callback([]);
             }
         }, {"url": url, "xpath": xpath});
     }

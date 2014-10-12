@@ -21,14 +21,21 @@ var utils = io
     .on('connection', function (socket) {
         socket.on('message', function (message){
             // scrape brawl custom music for songs
-            scraper.makeQuery(baseUrl+message, xpath, function(a) {
-                console.log("got songs!");
-                if (a instanceof Array){
-                    socket.emit('songlist', a);
-                } else {
-                    socket.emit('songlist', [a]);
-                }
-            });
+            while (true) {
+                scraper.makeQuery(baseUrl+message, xpath, function(a) {
+                    console.log("got songs!");
+                    if (a instanceof Array) {
+                        if (a.length > 0) {    
+                            socket.emit('songlist', a);
+                            return;
+                        } else {
+                            console.log("trying again");
+                        }
+                    } else {
+                        socket.emit('songlist', [a]);
+                    }
+                });
+            }
         });
     });
 
