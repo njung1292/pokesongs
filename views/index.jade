@@ -1,0 +1,49 @@
+doctype html
+html
+    head
+        title= title
+        link(type="text/css"
+             href="stylesheets/style.css"
+             rel="stylesheet")
+        link(type="text/css"
+             href="stylesheets/bootstrap.min.css"
+             rel="stylesheet")
+        link(type="text/css"
+             href="stylesheets/typeaheadjs.css"
+             rel="stylesheet")
+    body
+        nav(class="navbar navbar-default navbar-fixed-top", role="navigation")
+            div(class="container")
+                div(class="navbar-brand navbar-left")= title
+                div(id="player")
+                    audio(type="audio/mpeg", autoplay="autoplay")
+                    div(class="btn-grp")
+                        button(type="button", class="btn btn-default navbar-btn", id="back")
+                            span(class="glyphicon glyphicon-backward")
+                        
+                        button(type="button", class="btn btn-default navbar-btn", id="pause")
+                            span(class="glyphicon glyphicon-pause", id="pause-btn")
+                        
+                        button(type="button", class="btn btn-default navbar-btn", id="forward")
+                            span(class="glyphicon glyphicon-forward")
+                        
+                div(class="navbar-text truncate", id="nowPlaying")
+
+                form(class="navbar-form navbar-right" id="gameSearch")    
+                    div(class="form-group")
+                        input(type="text", class="typeahead form-control", id="game", placeholder="Start typing a game...")
+                    button(class="btn btn-default", id="submit")
+                        span(class="glyphicon glyphicon-refresh")
+                    
+        div(class="container")
+            h2(id="title")
+            div(class="list-group", id="songList")
+        
+        script(type="text/javascript", src="javascripts/jquery-1.11.1.min.js")
+        script(type="text/javascript", src="javascripts/typeahead.bundle.min.js")
+        script(type="text/javascript", src="javascripts/socket.io.js")
+        script(type="text/javascript", src="javascripts/utils.js")
+        script(type="text/javascript", src="javascripts/init.js")
+        script(type="text/javascript", src="javascripts/suggest.js")
+        script(type="text/javascript", src="javascripts/linkedList.js")
+        script(type="text/javascript", src="javascripts/musicData.js")

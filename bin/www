@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+var debug = require('debug')('appname');
+var app = require('../app');
+var http = require('http').Server(app);
+var io = require('socket.io')(http)
+var scraper = require('./scraper.js');
+
+var baseUrl = 'http://www.brawlcustommusic.com';
+var xpath = '//td/a';
+
+app.set('port', process.env.PORT || 5000);
+
+var suggest = io
+    .of('/suggest')
+    .on('connection', function (socket) {
+        console.log('connected to suggest.js');
+    });
+
+var utils = io
+    .of('/utils')
+    .on('connection', function (socket) {
+        socket.on('message', function (message){
+            // scrape brawl custom music for songs
+            scraper.makeQuery(baseUrl+message, xpath, function(a) {
+                console.log("got songs!");
+                if (a instanceof Array){
+                    socket.emit('songlist', a);
+                } else {
+                    socket.emit('songlist', [a]);
+                }
+            });
+        });
+    });
+
+// scrape the website and add data to bloodhound through the socket!
+scraper.makeQuery(baseUrl+"/gamelist", xpath, function(a) {
+    suggest.on('connection', function (socket) {
+        socket.emit('data', a);
+    });
+});
+
+http.listen(5000, function() {
+    console.log('listening on *:5000');
+});
