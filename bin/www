@@ -19,33 +19,31 @@ var suggest = io
 var utils = io
     .of('/utils')
     .on('connection', function (socket) {
+        console.log('connected to utils.js');
         socket.on('message', function (message){
             // scrape brawl custom music for songs
-            while (true) {
-                scraper.makeQuery(baseUrl+message, xpath, function(a) {
-                    console.log("got songs!");
-                    if (a instanceof Array) {
-                        if (a.length > 0) {    
-                            socket.emit('songlist', a);
-                            return;
-                        } else {
-                            console.log("trying again");
-                        }
-                    } else {
-                        socket.emit('songlist', [a]);
-                    }
-                });
-            }
+            scraper.makeQuery(baseUrl+message, xpath, function(a) {
+                console.log("got songs!");
+                if (a instanceof Array){
+                    socket.emit('songlist', a);
+                } else {
+                    socket.emit('songlist', [a]);
+                }
+            });
         });
     });
 
-// scrape the website and add data to bloodhound through the socket!
-scraper.makeQuery(baseUrl+"/gamelist", xpath, function(a) {
-    suggest.on('connection', function (socket) {
-        socket.emit('data', a);
-    });
-});
+function sendData(a) {
+    if (a.length > 0) {
+        suggest.on('connection', function (socket) {
+            socket.emit('data', a);
+        });
+    } else {
+        console.log("you should try agaain");
+    }
+}
 
 http.listen(5000, function() {
     console.log('listening on *:5000');
+    scraper.makeQuery(baseUrl+"/gamelist", xpath, sendData);
 });
