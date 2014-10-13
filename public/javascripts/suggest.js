@@ -17,6 +17,10 @@ games.initialize();
 suggest_socket.on('data', function(data) {
     hashGames(data);
     games.add(data);
+    // Enable navbar buttons and inputs
+    $(document).ready(function() {
+        enableButtons();
+    });
 });
 
 $(document).ready(function() {

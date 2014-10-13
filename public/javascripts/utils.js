@@ -14,6 +14,13 @@ utils_socket.on('data', function (data) {
     forward();
 });
 
+function enableButtons() {
+    $('#submit').attr('class', 'btn btn-default');
+    $('.tt-hint').prop('disabled', false);
+    $('#game').prop('disabled', false);
+    $('#game').css('background-color', '');
+}
+
 function hashGames(data) {
     hashObjects(data, gameDict);
 }
