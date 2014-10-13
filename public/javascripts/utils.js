@@ -66,7 +66,8 @@ function listSongs() {
         var songId = song.href.substring(1);
         var songTitle = song.content;
         $('#songList').append('<a href=\'#\' class=\'list-group-item\' id=' + songId + '>' + songTitle + '</a>');
-        $('#' + songId).click(function() {
+        $('#' + songId).click(function(e) {
+            e.preventDefault();
             updateNowPlaying({'content': this.text, 'href': "/" + this.id}, $(this).index());
         });
     }
