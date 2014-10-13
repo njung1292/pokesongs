@@ -1,7 +1,7 @@
 $(document).ready( function() {
     // Add event listeners
     $(document).keypress(function(e) {
-        if (e.which == 32) {
+        if ((e.which == 32) && (e.target = document.body)) {
             e.preventDefault();
             pause();
         } else if (e.which == 37) {
