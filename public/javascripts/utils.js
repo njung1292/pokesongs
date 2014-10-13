@@ -71,6 +71,9 @@ function listSongs() {
     $('#title').text(masterGame);
     for (var i = 0; i < masterSongList.length; i++) {
         var song = masterSongList[i];
+        if (song.href == 'undefined' || song.content == 'undefined') {
+            return;
+        }
         var songId = song.href.substring(1);
         var songTitle = song.content;
         $('#songList').append('<a href=\'#\' class=\'list-group-item\' id=' + songId + '>' + songTitle + '</a>');
