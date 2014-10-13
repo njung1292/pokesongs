@@ -2,6 +2,7 @@ $(document).ready( function() {
     // Add event listeners
     $(document).keypress(function(e) {
         if (e.which == 32) {
+            e.preventDefault();
             pause();
         } else if (e.which == 37) {
             back();
