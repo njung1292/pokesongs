@@ -1,7 +1,8 @@
 // Suggestion engine for auto-completion of search queries
 
 // connect browser socket to the server!
-var suggest_socket = io.connect('http://localhost:5000/suggest');
+// var suggest_socket = io.connect('http://localhost:5000/suggest');
+var suggest_socket = io.connect('http://pokesongs.herokuapp.com/suggest');
 
 var games = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('content'),

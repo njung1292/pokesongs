@@ -3,7 +3,8 @@ var gameDict = {};
 var currentIdx = -1;
 var masterGame = "";
 var masterSongList = [];
-var utils_socket = io.connect('http://localhost:5000/utils');
+// var utils_socket = io.connect('http://localhost:5000/utils');
+var utils_socket = io.connect('http://pokesongs.herokuapp.com/utils');
 
 // Setup socket to respond to songlist data from the server
 utils_socket.on('data', function (data) {
