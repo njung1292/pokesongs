@@ -72,7 +72,7 @@ function listSongs() {
     var baseUrl = 'http://www.brawlcustommusic.com/music/mp3/';
     // Add each song to the list as a link
     // for testing only!
-    var masterSongList = [{'href':'/1','content':'a'},{'href':'/2','content':'b'},{'href':'/3','content':'c'},{'href':'/4','content':'  d'}]
+    // var masterSongList = [{'href':'/1','content':'a'},{'href':'/2','content':'b'},{'href':'/3','content':'c'},{'href':'/4','content':'  d'}]
     for (var i = 0; i < masterSongList.length; i++) {
         var song = masterSongList[i];
         var songId = song.href.substring(1);
