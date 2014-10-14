@@ -17,6 +17,7 @@
         "debug": "*",
         "jade": "*",
         "typeahead": "*",
-        "socket.io": "*"
+        "socket.io": "*",
+        "zeroclipboard": "2.1.6"
     }
 }

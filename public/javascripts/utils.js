@@ -69,15 +69,41 @@ function updateNowPlaying(song, idx) {
 function listSongs() {
     $('#songList').empty();
     $('#title').text(masterGame);
+    var baseUrl = 'http://www.brawlcustommusic.com/music/mp3/';
+    // Add each song to the list as a link
+    // for testing only!
+    var masterSongList = [{'href':'/1','content':'a'},{'href':'/2','content':'b'},{'href':'/3','content':'c'},{'href':'/4','content':'  d'}]
     for (var i = 0; i < masterSongList.length; i++) {
         var song = masterSongList[i];
         var songId = song.href.substring(1);
         var songTitle = song.content;
-        $('#songList').append('<a href=\'#\' class=\'list-group-item\' id=' + songId + '>' + songTitle + '</a>');
+        var href = baseUrl + songId + '.mp3';
+        var link = $('<a></a>')
+            .addClass('list-group-item clearfix')
+            .attr('id', songId)
+            .attr('href', '#')
+            .appendTo('#songList');
+        var songTitleSpan = $('<span></span>')
+            .text(songTitle)
+            .appendTo(link);
+        var buttonSpan = $('<span></span>')
+            .addClass('pull-right')
+            .appendTo(link);
+        var copyButton = $('<button>Copy link</button>')
+            .addClass('btn btn-xs btn-info copy-button')
+            .attr('data-clipboard-text', href)
+            .click(function(event) {
+                event.stopPropagation();
+            })
+            .appendTo(buttonSpan);
         $('#' + songId).click(function(e) {
             e.preventDefault();
             updateNowPlaying({'content': this.text, 'href': "/" + this.id}, $(this).index());
         });
+        $('#songList').append('<button id="copy-button" data-clipboard-text="' + href + '"');
+        if (i == masterSongList.length - 1) {
+            var client = new ZeroClipboard( $('.copy-button') );
+        }
     }
 }
 
@@ -98,3 +124,12 @@ function pause() {
         $('#pause-btn').attr('class', 'glyphicon glyphicon-play');
     }
 }
+
+// ZeroClipboard
+// function initClipboardClient() {
+//     var client = new ZeroClipboard( $('.copy-button') );
+
+//     client.on( 'aftercopy', function( event ) {
+//         // console.log("copied text to clipboard: " + event.data["text/plain"]);
+//     } );
+// }
