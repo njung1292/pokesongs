@@ -18,7 +18,7 @@ var suggest = io
     .on('connection', function (socket) {
         console.log('connected to suggest.js');
         // Immediately query for the list of games
-        // tryQuery(baseUrl + "/gamelist", [], socket);
+        tryQuery(baseUrl + "/gamelist", [], socket);
     });
 
 // Socket connection for sending the song list to the frontend utils
