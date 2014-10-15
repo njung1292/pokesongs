@@ -1,5 +1,6 @@
 // Initialize important information
 var gameDict = {};
+var gameTitles = [];
 var currentIdx = -1;
 var masterGame = "";
 var masterSongList = [];
@@ -15,10 +16,11 @@ utils_socket.on('data', function (data) {
 });
 
 function enableButtons() {
-    $('#submit').attr('class', 'btn btn-default');
     $('.tt-hint').prop('disabled', false);
     $('#game').prop('disabled', false);
     $('#game').css('background-color', '');
+    $('#randomGame').removeClass('disabled');
+    $('#submit').removeClass('disabled');
 }
 
 function hashGames(data) {
@@ -29,6 +31,7 @@ function hashObjects(data, dict) {
     for (var i = 0; i < data.length; i++) {
         var obj = data[i];
         dict[obj.content] = obj.href;
+        gameTitles[i] = obj.content;
     }
 }
 
@@ -114,6 +117,13 @@ function refreshSongList() {
     utils_socket.emit('game', gameDict[masterGame]);
 }
 
+function pickRandom() {
+    var randomGameTitle = gameTitles[ gameTitles.length * Math.random() << 0 ];
+    masterGame = randomGameTitle;
+    masterSongList = [];
+    utils_socket.emit('game', gameDict[masterGame]);
+}
+
 function pause() {
     var audio = $('audio');
     if (audio[0].paused) {
@@ -124,12 +134,3 @@ function pause() {
         $('#pause-btn').attr('class', 'glyphicon glyphicon-play');
     }
 }
-
-// ZeroClipboard
-// function initClipboardClient() {
-//     var client = new ZeroClipboard( $('.copy-button') );
-
-//     client.on( 'aftercopy', function( event ) {
-//         // console.log("copied text to clipboard: " + event.data["text/plain"]);
-//     } );
-// }

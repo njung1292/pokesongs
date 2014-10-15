@@ -29,7 +29,11 @@ var utils = io
         // Listen for game messages from utils.js
         socket.on('game', function (game){
             // Query for the songlist
-            tryQuery(baseUrl + game, [], socket);
+            if (game != null) {
+                tryQuery(baseUrl + game, [], socket);
+            } else {
+                console.log("got a null game from utils");
+            }
         });
     });
 
@@ -44,6 +48,7 @@ function tryQuery(url, results, socket) {
         });
     } else {
         // Emit the results
+        console.log("success");
         return socket.emit('data', results);
     }
 }

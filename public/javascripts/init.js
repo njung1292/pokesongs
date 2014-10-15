@@ -13,14 +13,18 @@ $(document).ready( function() {
     $('audio').on('ended', function() {
         forward();
     });
-    $('audio').on('played')( function() { pause() });
-    $('audio').on('paused')( function() { pause() });
+    $('audio').on('played'), function() { pause() };
+    $('audio').on('paused'), function() { pause() };
     $('#back').click( function() { back() });
     $('#forward').click( function() { forward() });
     $('#pause').click( function() { pause() });
     $('#gameSearch').submit(function(e) {
         e.preventDefault();
         refreshSongList();
+    });
+    $('#randomGame').click( function() { 
+        pickRandom();
+        return false;
     });
     $('#game').keypress(function(e) {
         if (e.which == 13) {
