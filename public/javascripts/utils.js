@@ -10,8 +10,8 @@ var utils_socket = io.connect('http://pokesongs.herokuapp.com/utils');
 // Setup socket to respond to songlist data from the server
 utils_socket.on('data', function (data) {
     masterSongList = data;
-    listSongs();
     currentIdx = -1;
+    listSongs();
     forward();
 });
 
@@ -97,6 +97,11 @@ function listSongs() {
             .attr('data-clipboard-text', href)
             .click(function(event) {
                 event.stopPropagation();
+            })
+            .tooltip({
+                'animation': 'true',
+                'trigger': 'click',
+                'title': 'Copied!'
             })
             .appendTo(buttonSpan);
         $('#' + songId).click(function(e) {

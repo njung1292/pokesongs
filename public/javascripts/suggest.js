@@ -17,8 +17,13 @@ games.initialize();
 suggest_socket.on('data', function(data) {
     hashGames(data);
     games.add(data);
+    // Replace loading gif with container
     // Enable navbar buttons and inputs
     $(document).ready(function() {
+        if ($('#loading') != null) {
+            $('#loading').remove();
+            $('#main').attr('hidden', false);
+        }
         enableButtons();
     });
 });
