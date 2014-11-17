@@ -2,4 +2,5 @@ pokesongs
 =========
 
 web playlist for video game songs.
-pokesongs.herokuapp.com
+
+http://pokesongs.herokuapp.com
