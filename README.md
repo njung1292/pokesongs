@@ -12,4 +12,4 @@ This app employs the following:
 * ZeroClipboard
 * node-yql
 
-Try it out at http://pokesongs.herokuapp.com.
+~~Try it out at http://pokesongs.herokuapp.com.~~ It appears http://brawlcustommusic.com is down, so you will not be able to get past the adorable kitty page. (^._.^)ﾉ
