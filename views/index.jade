@@ -8,13 +8,13 @@ html
         meta(name="author", content)
         title= title
         link(rel="icon", href="../images/favicon.ico")
+        //- Bootstrap core CSS
+        link(type="text/css"
+             href="/bower_components/bootstrap/dist/css/bootstrap.min.css"
+             rel="stylesheet")
         //- Custom CSS
         link(type="text/css"
              href="stylesheets/style.css"
-             rel="stylesheet")
-        //- Bootstrap core CSS
-        link(type="text/css"
-             href="../bower_components/dist/css/bootstrap.min.css"
              rel="stylesheet")
         //- Twitter typeahead CSS
         link(type="text/css"
@@ -45,7 +45,7 @@ html
               
               button(type="button", class="btn btn-default navbar-btn", id="forward")
                 span(class="glyphicon glyphicon-forward")           
-          div(class="navbar-text truncate", id="nowPlaying") Now Playing
+          div(class="navbar-text truncate", id="nowPlaying") Loading...
         div(class="navbar-collapse collapse", style="height: 1px;")
           form(class="navbar-form navbar-right", id="gameSearch")    
             div(class="form-group") 
@@ -54,20 +54,20 @@ html
                     id="game"
                     disabled
                     placeholder="Start typing a game...")
-            button(class="disabled btn btn-default", id="submit")
+            button(class="disabled btn btn-default", id="submit", title="Go!")
               span(class="glyphicon glyphicon-refresh")
-            button(class="disabled btn btn-default", id="randomGame")
-              span(class="glyphicon glyphicon-tree-deciduous")
+            button(class="disabled btn btn-default", id="randomGame", title="Random")
+              span(class="glyphicon glyphicon-asterisk")
               
     div(id="loading")
     div(id="main", class="container", hidden)
       h2(id="title")
       div(class="list-group", id="songList")
 
-    script(type="text/javascript", src="../bower_components/jquery/dist/jquery.min.js")
-    script(type="text/javascript", src="../bower_components/bootstrap/dist/bootstrap.min.js")
-    script(type="text/javascript", src="../bower_components/typeahead.js/dist/typeahead.bundle.min.js")
-    script(type="text/javascript", src="../bower_components/zeroclipboard/ZeroClipboard.min.js")
+    script(type="text/javascript", src="/bower_components/jquery/dist/jquery.min.js")
+    script(type="text/javascript", src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+    script(type="text/javascript", src="/bower_components/typeahead.js/dist/typeahead.bundle.min.js")
+    script(type="text/javascript", src="/bower_components/zeroclipboard/dist/ZeroClipboard.min.js")
     script(type="text/javascript", src="javascripts/socket.io.js")
     script(type="text/javascript", src="javascripts/utils.js")
     script(type="text/javascript", src="javascripts/init.js")
