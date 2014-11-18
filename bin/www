@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var debug = require('debug')('appname');
 var app = require('../app');
+var port = process.env.PORT || 5000;
 app.set('port', port);
 var http = require('http').Server(app);
 var io = require('socket.io')(http)
@@ -9,8 +10,6 @@ var scraper = require('./scraper.js');
 // Parameters for YQL query in scraper.js
 var baseUrl = 'http://www.brawlcustommusic.com';
 var xpath = '//td/a';
-
-var port = process.env.PORT || 5000;
 
 // Socket connection for Twitter typeahead suggestion engine
 var suggest = io
@@ -54,5 +53,5 @@ function tryQuery(url, results, socket) {
 }
 
 http.listen(port, function() {
-    console.log('listening on *:' + port);
+    console.log('listening on port ' + port);
 });
