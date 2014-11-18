@@ -4,6 +4,7 @@
 // var suggest_socket = io.connect('http://localhost:5000/suggest');
 var suggest_socket = io.connect('http://pokesongs.herokuapp.com/suggest');
 
+// Initialize Bloodhound with the 'content' field of each game as the tokenizer
 var games = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('content'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -17,8 +18,7 @@ games.initialize();
 suggest_socket.on('data', function(data) {
     hashGames(data);
     games.add(data);
-    // Replace loading gif with container
-    // Enable navbar buttons and inputs
+    // Replace loading gif with container and enable navbar buttons and inputs
     $(document).ready(function() {
         if ($('#loading') != null) {
             $('#loading').remove();
@@ -28,6 +28,7 @@ suggest_socket.on('data', function(data) {
     });
 });
 
+// Initialize typeahead
 $(document).ready(function() {
     $('.typeahead').typeahead({
         hint: true,
